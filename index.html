@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kalkulator Himpunan Matematika Diskrit</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 32px 16px;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #FFF3B0;
+      color: #3E2723;
+    }
+
+    .container {
+      max-width: 720px;
+      margin: 0 auto;
+      background-color: #FFFDF5;
+      border: 2.5px solid #FF6B9D;
+      border-radius: 18px;
+      padding: 28px;
+      box-shadow: 0 12px 28px rgba(255, 107, 157, 0.22);
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: 1.65rem;
+      color: #3E2723;
+    }
+
+    .subtitle {
+      margin: 0 0 24px;
+      color: #5d4037;
+      font-size: 0.95rem;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 600;
+      font-size: 0.92rem;
+      color: #3E2723;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 11px 14px;
+      border: 2px solid #FF8FB1;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      background-color: #FFF9DB;
+      color: #3E2723;
+      transition: border-color 0.2s, box-shadow 0.2s, background-color 0.2s;
+    }
+
+    input[type="text"]:focus {
+      outline: none;
+      border-color: #3E2723;
+      background-color: #ffffff;
+      box-shadow: 0 0 0 3px rgba(255, 107, 157, 0.35);
+    }
+
+    .button-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 20px;
+      margin-bottom: 14px;
+    }
+
+    button {
+      padding: 10px 16px;
+      border: 2px solid #3E2723;
+      border-radius: 10px;
+      background-color: #FF6B9D;
+      color: #3E2723;
+      font-weight: 700;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: background-color 0.2s, transform 0.1s;
+    }
+
+    button:hover {
+      background-color: #FFD166;
+    }
+
+    button:active {
+      transform: scale(0.98);
+    }
+
+    .btn-secondary {
+      background-color: #FFE066;
+      color: #3E2723;
+      border: 2px solid #3E2723;
+    }
+
+    .btn-secondary:hover {
+      background-color: #FF8FB1;
+    }
+
+    .output-box {
+      background-color: #FFE66D;
+      border: 2px solid #FF8FB1;
+      border-radius: 12px;
+      padding: 18px 20px;
+      margin-top: 18px;
+      margin-bottom: 20px;
+    }
+
+    .output-box h3 {
+      margin: 0 0 12px;
+      color: #3E2723;
+      font-size: 1.1rem;
+    }
+
+    .output-box p {
+      margin: 6px 0;
+      line-height: 1.5;
+      color: #3E2723;
+    }
+
+    .note-text {
+      font-size: 0.88rem;
+      color: #4e342e;
+      margin-top: 10px !important;
+    }
+
+    .placeholder-text {
+      color: #4e342e;
+      margin: 0;
+    }
+
+    .venn-card {
+      background-color: #FFF0F5;
+      border: 2px solid #FFD166;
+      border-radius: 12px;
+      padding: 18px 20px;
+    }
+
+    .venn-card h3 {
+      margin: 0 0 12px;
+      font-size: 1.05rem;
+      color: #3E2723;
+    }
+
+    .venn-svg {
+      width: 100%;
+      max-width: 560px;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+    }
+
+    .venn-legend {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 10px;
+      margin-top: 12px;
+      font-size: 0.88rem;
+    }
+
+    .legend-item {
+      background-color: #FFF3B0;
+      border: 1.5px solid #FF8FB1;
+      border-radius: 8px;
+      padding: 8px 10px;
+      color: #3E2723;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Kalkulator Himpunan Matematika Diskrit</h1>
+    <p class="subtitle">Masukkan anggota himpunan lalu pilih operasi yang ingin dihitung.</p>
+
+    <div class="form-group">
+      <label for="setA">Anggota Himpunan A (pisahkan dengan koma atau spasi):</label>
+      <input type="text" id="setA" placeholder="Contoh: 1, 2, 3, 4" />
+    </div>
+
+    <div class="form-group">
+      <label for="setB">Anggota Himpunan B (pisahkan dengan koma atau spasi):</label>
+      <input type="text" id="setB" placeholder="Contoh: 3, 4, 5, 6" />
+    </div>
+
+    <div class="button-group">
+      <button type="button" id="btnUnion">Gabungan (A ∪ B)</button>
+      <button type="button" id="btnIntersect">Irisan (A ∩ B)</button>
+      <button type="button" id="btnDiffAB">Selisih (A - B)</button>
+      <button type="button" id="btnDiffBA">Selisih (B - A)</button>
+      <button type="button" id="btnSymDiff">Beda Setangkup (A ⊕ B)</button>
+      <button type="button" class="btn-secondary" id="btnClear">Bersihkan</button>
+    </div>
+
+    <div id="output" class="output-box">
+      <p class="placeholder-text">Hasil perhitungan akan tampil di sini.</p>
+    </div>
+
+    <div class="venn-card">
+      <h3>Diagram Venn</h3>
+      <svg class="venn-svg" viewBox="0 0 560 250" xmlns="http://www.w3.org/2000/svg" aria-label="Diagram Venn Himpunan A dan B">
+        <circle cx="215" cy="128" r="88" fill="rgba(255, 107, 157, 0.58)" stroke="#3E2723" stroke-width="2.2" />
+        <circle cx="345" cy="128" r="88" fill="rgba(255, 224, 102, 0.72)" stroke="#3E2723" stroke-width="2.2" />
+
+        <text x="165" y="28" font-size="15" font-weight="700" fill="#3E2723" text-anchor="middle">Himpunan A</text>
+        <text x="395" y="28" font-size="15" font-weight="700" fill="#3E2723" text-anchor="middle">Himpunan B</text>
+
+        <text id="vennOnlyA" x="165" y="132" font-size="13" font-weight="700" fill="#3E2723" text-anchor="middle">-</text>
+        <text id="vennBoth" x="280" y="132" font-size="13" font-weight="700" fill="#3E2723" text-anchor="middle">-</text>
+        <text id="vennOnlyB" x="395" y="132" font-size="13" font-weight="700" fill="#3E2723" text-anchor="middle">-</text>
+      </svg>
+
+      <div class="venn-legend">
+        <div class="legend-item"><strong>Hanya A (A - B):</strong> <span id="legendOnlyA">-</span></div>
+        <div class="legend-item"><strong>Irisan (A ∩ B):</strong> <span id="legendBoth">-</span></div>
+        <div class="legend-item"><strong>Hanya B (B - A):</strong> <span id="legendOnlyB">-</span></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function sortValues(arr) {
+      return [...arr].sort((a, b) => {
+        const numA = Number(a);
+        const numB = Number(b);
+        const bothNumeric = !Number.isNaN(numA) && !Number.isNaN(numB);
+        if (bothNumeric) {
+          return numA - numB;
+        }
+        return a.localeCompare(b, "id");
+      });
+    }
+
+    function parseSet(rawText) {
+      const items = rawText
+        .split(/[\s,]+/)
+        .map((item) => item.trim())
+        .filter((item) => item.length > 0);
+
+      return sortValues(Array.from(new Set(items)));
+    }
+
+    function formatSet(arr) {
+      if (arr.length === 0) return "∅ (Himpunan Kosong)";
+      return `{ ${arr.join(", ")} }`;
+    }
+
+    function formatCompact(arr) {
+      if (arr.length === 0) return "∅";
+      return arr.join(", ");
+    }
+
+    function updateVenn(setA, setB) {
+      const bSet = new Set(setB);
+      const aSet = new Set(setA);
+
+      const onlyA = sortValues(setA.filter((x) => !bSet.has(x)));
+      const both = sortValues(setA.filter((x) => bSet.has(x)));
+      const onlyB = sortValues(setB.filter((x) => !aSet.has(x)));
+
+      document.getElementById("vennOnlyA").textContent = formatCompact(onlyA);
+      document.getElementById("vennBoth").textContent = formatCompact(both);
+      document.getElementById("vennOnlyB").textContent = formatCompact(onlyB);
+
+      document.getElementById("legendOnlyA").textContent = formatSet(onlyA);
+      document.getElementById("legendBoth").textContent = formatSet(both);
+      document.getElementById("legendOnlyB").textContent = formatSet(onlyB);
+    }
+
+    function renderResult(title, symbol, resultArr, setA, setB, explanation) {
+      const outputEl = document.getElementById("output");
+      outputEl.innerHTML = `
+        <h3>${title} (${symbol})</h3>
+        <p><strong>Himpunan A:</strong> ${formatSet(setA)} (n = ${setA.length})</p>
+        <p><strong>Himpunan B:</strong> ${formatSet(setB)} (n = ${setB.length})</p>
+        <p><strong>Hasil:</strong> ${formatSet(resultArr)} (n = ${resultArr.length})</p>
+        <p class="note-text"><strong>Penjelasan:</strong> ${explanation}</p>
+      `;
+      updateVenn(setA, setB);
+    }
+
+    function getInputs() {
+      const a = parseSet(document.getElementById("setA").value);
+      const b = parseSet(document.getElementById("setB").value);
+      return { a, b };
+    }
+
+    document.getElementById("btnUnion").addEventListener("click", () => {
+      const { a, b } = getInputs();
+      const unionArr = sortValues(Array.from(new Set([...a, ...b])));
+      renderResult(
+        "Gabungan",
+        "A ∪ B",
+        unionArr,
+        a,
+        b,
+        "Memuat seluruh anggota yang ada di Himpunan A, Himpunan B, atau keduanya tanpa duplikasi."
+      );
+    });
+
+    document.getElementById("btnIntersect").addEventListener("click", () => {
+      const { a, b } = getInputs();
+      const setB = new Set(b);
+      const intersectArr = a.filter((item) => setB.has(item));
+      renderResult(
+        "Irisan",
+        "A ∩ B",
+        intersectArr,
+        a,
+        b,
+        "Hanya memuat anggota yang muncul bersamaan di Himpunan A dan Himpunan B."
+      );
+    });
+
+    document.getElementById("btnDiffAB").addEventListener("click", () => {
+      const { a, b } = getInputs();
+      const setB = new Set(b);
+      const diffArr = a.filter((item) => !setB.has(item));
+      renderResult(
+        "Selisih",
+        "A - B",
+        diffArr,
+        a,
+        b,
+        "Memuat anggota Himpunan A yang tidak termasuk dalam Himpunan B."
+      );
+    });
+
+    document.getElementById("btnDiffBA").addEventListener("click", () => {
+      const { a, b } = getInputs();
+      const setA = new Set(a);
+      const diffArr = b.filter((item) => !setA.has(item));
+      renderResult(
+        "Selisih",
+        "B - A",
+        diffArr,
+        a,
+        b,
+        "Memuat anggota Himpunan B yang tidak termasuk dalam Himpunan A."
+      );
+    });
+
+    document.getElementById("btnSymDiff").addEventListener("click", () => {
+      const { a, b } = getInputs();
+      const setA = new Set(a);
+      const setB = new Set(b);
+      const onlyA = a.filter((item) => !setB.has(item));
+      const onlyB = b.filter((item) => !setA.has(item));
+      const symDiffArr = sortValues([...onlyA, ...onlyB]);
+      renderResult(
+        "Beda Setangkup",
+        "A ⊕ B",
+        symDiffArr,
+        a,
+        b,
+        "Memuat anggota yang hanya ada di A atau hanya ada di B, tetapi tidak di keduanya ((A - B) ∪ (B - A))."
+      );
+    });
+
+    document.getElementById("btnClear").addEventListener("click", () => {
+      document.getElementById("setA").value = "";
+      document.getElementById("setB").value = "";
+      document.getElementById("output").innerHTML =
+        '<p class="placeholder-text">Hasil perhitungan akan tampil di sini.</p>';
+      ["vennOnlyA", "vennBoth", "vennOnlyB", "legendOnlyA", "legendBoth", "legendOnlyB"].forEach(
+        (id) => {
+          document.getElementById(id).textContent = "-";
+        }
+      );
+    });
+  </script>
+</body>
+</html>
